@@ -1,0 +1,183 @@
+<!doctype html>
+
+<!-- Редактор сохранений для Undertale -->
+<!-- Оригинал: http://crumblingstatue.github.io/FloweysTimeMachine -->
+<!-- Нашёл ошибку? Знаешь, как улучшить проект? Пиши! daniil.omelchenko собака mail.ru -->
+
+<html lang="en">
+    <head>
+    	<link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon">
+    	<link rel="icon" href="res/favicon.ico" type="image/x-icon">
+        <meta charset="utf-8" />
+        <meta name="description" content="Редактор сохранений Undertale." />
+        <meta name="keywords" content="Undertale,save,editor" />
+        <title>Машина времени Флауи</title>
+        <script src="lib/FileSaver.min.js"></script>
+        <script src="presets/presets.js"></script>
+        <script src="presets/ruins-start.js"></script>
+        <script src="presets/sans-battle.js"></script>
+        <script src="presets/Undyne%20The%20Undying.js"></script>
+        <script src="presets/Asgore%20(normal).js"></script>
+        <script src="presets/Asgore%20(true%20ending).js"></script>
+        <script src="presets/Omega%20Flowey.js"></script>
+        <script src="main.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+    </head>
+    <body>
+        <a href="https://github.com/Martin-Winter/FloweysTimeMachine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+        <h1><img src="res/flowey_nice.png" alt="" id="floweyimg" />Машина времени Флауи</h1>
+        <p>
+            <a href="help.html" target="_blank"> Помощь </a>
+        </p>
+        <label> Готовые шаблоны </label><select id="builtinpresetselect"> </select>
+        <input type="button" id="builtinpresetload" value="Загрузить" />
+        <label> Ваши шаблоны </label><select id="userpresetselect"> </select>
+        <input type="button" id="userpresetload" value="Загрузить" disabled />
+        <input type="button" id="userpresetsave" value="Сохранить" disabled />
+        <input type="button" id="userpresetnew" value="Новый" />
+        <input type="button" id="userpresetdelete" value="Удалить" disabled />
+        <input type="button" id="userpresetexport" value="Сохранить и скачать" disabled />
+        <h2> Persistent Data </h2>
+        <p>
+            Параметры, которые сохраняются на протяжении нескольких прохождений.
+        </p>
+        <form>
+            <div>
+                <fieldset>
+                    <legend> undertale.ini </legend>
+                    <input type="file" id="ini-file" />
+                    <div>
+                        <input id="ini-loadbutton" type="button" value="Загрузить" disabled />
+                        <input type="button" id="ini-savebutton" value="Сохранить" />
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend> Основное </legend>
+                    <label> Имя </label> <input id="ini-name" type="text" />
+                    <label> Локация </label> <select id="ini-location"> </select>
+                    <label> Убийтсва </label> <input id="ini-kills" type="text" />
+                    <label> LOVE </label> <input id="ini-love" type="text" />
+                </fieldset>
+            </div>
+            <fieldset>
+                <legend> Пост-геноцид </legend>
+                <label> system_information_962 <sup title="Если этот файл есть, мир &quot;уничтожен&quot; после прохождения геноцид-рута.">[?]</sup> </label> <input type="button" id="savesi2" value="Сохранить" />
+                <label> system_information_963 <sup title="Если этот файл есть, вы &quot;продали&quot; вашу душу после прохождения геноцид-рута.">[?]</sup> </label> <input type="button" id="savesi3" value="Сохранить" />
+            </fieldset>
+            <fieldset>
+                <legend> Омега Флауи </legend>
+                <label> Вы застряли в мире Флауи </label> <input type="checkbox" id="ini-omega-flowey-trapped" />
+                <label> Бой начат </label> <input type="checkbox" id="ini-omega-flowey-battle-init" />
+                <label> Количество смертей </label> <input type="text" id="ini-omega-flowey-deaths" />
+            </fieldset>
+            <fieldset>
+                <legend> Бонус </legend>
+                <label> Вы увернулись от всех титров </label> <input type="checkbox" id="ini-dodged-all-special-thanks" />
+            </fieldset>
+        </form>
+        <h2> SAVE Data </h2>
+        <p>
+            Сохранения в точках сохранения.
+        </p>
+        <form>
+            <div>
+                <fieldset>
+                    <legend> file0 </legend>
+                    <input type="file" id="sav-file" />
+                    <div>
+                        <input id="sav-loadbutton" type="button" value="Загрузить" disabled />
+                        <input type="button" id="sav-savebutton" value="Сохранить" />
+                    </div>
+                </fieldset>
+                <fieldset>
+                <legend>Основное</legend>
+                <label>Имя</label> <input type="text" id="sav-name" />
+                <label>Локация</label> <select id="sav-location"> </select>
+                <label>Убийства</label> <input type="text" id="sav-kills" />
+                <label>??? kill count </label> <input type="text" id="sav-unkkills" />
+                </fieldset>
+                <fieldset>
+                <legend>Статистика</legend>
+                <label>Уровень расправы</label> <input type="text" id="sav-love" />
+                <label>Очки здоровья</label> <input type="text" id="sav-hp" />
+                <label>Очки Пыток</label> <input type="text" id="sav-exp" />
+                <label>Золото</label> <input type="text" id="sav-gold" />
+                <label>Атака</label> <input type="text" id="sav-at" />
+                <label>Атака Оружия</label> <input type="text" id="sav-weaponat" />
+                <label>Очки защиты</label> <input type="text" id="sav-df" />
+                <label>Защита Брони</label> <input type="text" id="sav-armordf" />
+                </fieldset>
+            </div>
+            <div>
+            <fieldset>
+                <legend>Экипировка</legend>
+                <label>Оружие</label> <select id="sav-weapon"> </select>
+                <label>Броня</label> <select id="sav-armor"> </select>
+            </fieldset>
+            <fieldset>
+                <legend>Инвентарь</legend>
+                <label>Слот 1</label> <select id="sav-invslot1"> </select>
+                <label>Слот 2</label> <select id="sav-invslot2"> </select>
+                <label>Слот 3</label> <select id="sav-invslot3"> </select>
+                <label>Слот 4</label> <select id="sav-invslot4"> </select>
+                <label>Слот 5</label> <select id="sav-invslot5"> </select>
+                <label>Слот 6</label> <select id="sav-invslot6"> </select>
+                <label>Слот 7</label> <select id="sav-invslot7"> </select>
+                <label>Слот 8</label> <select id="sav-invslot8"> </select>
+            </fieldset>
+            <fieldset>
+                <legend>Телефон</legend>
+                <label> У вас есть телефон </label> <input id="sav-havecell" type="checkbox" />
+                <label>Слот 1</label> <select id="sav-cellslot1"> </select>
+                <label>Слот 2</label> <select id="sav-cellslot2"> </select>
+                <label>Слот 3</label> <select id="sav-cellslot3"> </select>
+                <label>Слот 4</label> <select id="sav-cellslot4"> </select>
+                <label>Слот 5</label> <select id="sav-cellslot5"> </select>
+                <label>Слот 6</label> <select id="sav-cellslot6"> </select>
+                <label>Слот 7</label> <select id="sav-cellslot7"> </select>
+                <label>Слот 8</label> <select id="sav-cellslot8"> </select>
+            </fieldset>
+            </div>
+            <div>
+                <fieldset>
+                    <legend> Руины </legend>
+                    <label> Количество убийств </label> <input type="text" id="sav-ruinskills" />
+                    <label>Тренировочный манекен</label> <select id="sav-trainingdummystate"> </select>
+                    <label>Ториэль</label> <select id="sav-torielstate"> </select>
+                </fieldset>
+                <fieldset>
+                    <legend> Сноудин </legend>
+                    <label>Количество убийств</label> <input type="text" id="sav-snowdinkills" />
+                    <label>Догго</label> <select id="sav-doggostate"> </select>
+                    <label>Догами и Догаресса</label> <select id="sav-dogamydogaressastate"> </select>
+                    <label>Большой пёс</label> <select id="sav-greaterdogstate"> </select>
+                    <label>Comedian State</label> <select id="sav-comedianstate"> </select>
+                    <label>Папирус</label> <select id="sav-papyrusstate"> </select>
+                </fieldset>
+                <fieldset>
+                    <legend> Водопад </legend>
+                    <label>Количество убийств</label> <input type="text" id="sav-waterfallkills" />
+                    <label>Шайрен</label> <select id="sav-shyrenstate"> </select>
+                    <label>Безумный манекен</label> <select id="sav-maddummystate"> </select>
+                    <label>Андайн</label> <select id="sav-undynestate1"> </select>
+                    <label>Андайн (геноцид)</label> <select id="sav-undynestate2"> </select>
+                </fieldset>
+                <fieldset>
+                    <legend> Хотленд </legend>
+                    <label>Количество убийств</label> <input type="text" id="sav-hotlandkills" />
+                    <label>Королевские стражники</label> <select id="sav-broguardsstate"> </select>
+                    <label>Маффет</label> <select id="sav-muffetstate"> </select>
+                    <label>Меттатон</label> <select id="sav-mettatonstate"> </select>
+                </fieldset>
+                <fieldset>
+                    <legend> Тру лаборатория </legend>
+                    <label> Выход (можно получить хорошую концовку) </label> <input id="sav-exitedtruelab" type="checkbox" />
+                </fieldset>
+                <fieldset>
+                  <legend> Другое </legend>
+                  <label>Концовка</label> <select id="sav-plotvalue"> </select>
+                </fieldset>
+            </div>
+        </form>
+    </body>
+</html>
